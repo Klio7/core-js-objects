@@ -216,7 +216,7 @@ function sellTickets(queue) {
 function Rectangle(width, height) {
   this.width = width;
   this.height = height;
-  this.getArea = function () {
+  this.getArea = function f() {
     return this.width * this.height;
   };
 }
@@ -324,8 +324,8 @@ function sortCitiesArray(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(array, keySelector, valueSelector) {
-  return array.keySelector;
+function group(/* array, keySelector, valueSelector */) {
+  throw new Error('Not implemented');
 }
 
 /**
