@@ -324,8 +324,19 @@ function sortCitiesArray(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const result = array.reduce((accumulator, item) => {
+    if (accumulator.has(keySelector(item))) {
+      accumulator.set(keySelector(item), [
+        ...accumulator.get(keySelector(item)),
+        valueSelector(item),
+      ]);
+    } else {
+      accumulator.set(keySelector(item), [valueSelector(item)]);
+    }
+    return accumulator;
+  }, new Map());
+  return result;
 }
 
 /**
@@ -381,30 +392,48 @@ function group(/* array, keySelector, valueSelector */) {
  *
  *  For more examples see unit tests.
  */
+class SuperBuilder {
+  constructor(selector) {
+    this.selector = selector;
+  }
+
+  stringify() {
+    return `${this.selector}`;
+  }
+}
+
+/* combine(selector1, combinator, selector2) {
+    return `${this.selector1}${combinator}${this.selector2}`;
+  } */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    return new SuperBuilder(value);
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    const refactoredValue = `#${value}`;
+    return new SuperBuilder(refactoredValue);
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    const refactoredValue = `.${value}`;
+    return new SuperBuilder(refactoredValue);
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    const refactoredValue = `[${value}]`;
+    return new SuperBuilder(refactoredValue);
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    const refactoredValue = `:${value}`;
+    return new SuperBuilder(refactoredValue);
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    const refactoredValue = `::${value}`;
+    return new SuperBuilder(refactoredValue);
   },
 
   combine(/* selector1, combinator, selector2 */) {
